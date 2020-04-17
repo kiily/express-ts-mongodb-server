@@ -1,0 +1,33 @@
+{
+  "swagger": {
+    "outputDirectory": ".",
+    "entryFile": "./src/index.ts",
+    "specVersion": 3,
+    "noImplicitAdditionalProperties": "silently-remove-extras",
+    "securityDefinitions": {
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "name": "jsonwebtoken"
+      }
+    },
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "Operations related to user authentication"
+      },
+      {
+        "name": "User",
+        "description": "Operations related to users"
+      }
+    ],
+    "host": "localhost:8080"
+  },
+  "routes": {
+    "basePath": "/",
+    "entryFile": "./src/index.ts",
+    "routesDir": "./src",
+    "middleware": "express",
+    "authenticationModule": "./src/services/authentication.service"
+  }
+}

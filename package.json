@@ -1,0 +1,67 @@
+{
+  "name": "express-ts-mongodb-server",
+  "version": "1.0.0",
+  "description": "Express server implemented with TypeScript and connected to MongoDB using mongoose ODM",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "tsc": "tsc",
+    "start": "node build/src/index.js",
+    "dev": "nodemon src/index.ts",
+    "dev:debug": "cross-env env $(cat ./env/${ENV-dev1}.env | xargs) nodemon --inspect=8080 --no-lazy src/index.ts",
+    "copy:certs": "mkdir -p build/src/certificates && cp -R src/certificates/* build/src/certificates",
+    "build:prod": "rimraf build && npm run tsc && npm run copy:certs",
+    "build:prod:serve": "npm run build:prod && npm start",
+    "lint": "eslint src/**/*.ts",
+    "reset:modules": "rm -rf node_modules && npm install",
+    "generate": "$(npm bin)/tsoa swagger && $(npm bin)/tsoa routes"
+  },
+  "keywords": [
+    "node",
+    "typescript",
+    "express",
+    "helmet",
+    "swagger"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kiily/express-ts-mongodb-server.git"
+  },
+  "author": "Miguel Marin Vermelho",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.7",
+    "body-parser": "1.19.0",
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "helmet": "^3.21.2",
+    "jsonwebtoken": "8.5.1",
+    "mongodb": "3.4.1",
+    "mongoose": "5.8.2",
+    "swagger-ui-express": "4.1.2",
+    "ts-node": "8.5.4",
+    "tsoa": "2.5.10",
+    "typescript": "3.7.4"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/dotenv": "8.2.0",
+    "@types/express": "4.17.2",
+    "@types/helmet": "0.0.45",
+    "@types/jsonwebtoken": "8.3.5",
+    "@types/mongoose": "5.5.34",
+    "@types/node": "12.12.21",
+    "@types/swagger-ui-express": "4.1.0",
+    "@typescript-eslint/eslint-plugin": "2.12.0",
+    "@typescript-eslint/parser": "2.12.0",
+    "cross-env": "6.0.3",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.7.0",
+    "eslint-plugin-prettier": "3.1.2",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
+    "nodemon": "2.0.2",
+    "prettier": "1.19.1",
+    "rimraf": "^3.0.0"
+  }
+}

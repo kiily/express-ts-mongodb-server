@@ -1,0 +1,311 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"IUser": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"dob": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"lastName": {
+						"type": "string",
+						"nullable": true
+					},
+					"firstName": {
+						"type": "string",
+						"nullable": true
+					},
+					"location": {
+						"type": "string",
+						"nullable": true
+					},
+					"isAdmin": {
+						"type": "boolean",
+						"nullable": true
+					},
+					"tenant": {
+						"type": "string",
+						"nullable": true
+					},
+					"groups": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array",
+						"nullable": true
+					}
+				},
+				"required": [
+					"email",
+					"username",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICustomResponse": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"statusCode": {
+						"type": "number",
+						"format": "double"
+					},
+					"token": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"required": [
+					"message",
+					"statusCode"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICredentials": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"jwt": {
+				"type": "http",
+				"scheme": "bearer",
+				"name": "jsonwebtoken"
+			}
+		}
+	},
+	"info": {
+		"title": "omnidebate-server",
+		"version": "1.0.0",
+		"description": "Server to host the API for the OmniDebate app",
+		"license": {
+			"name": "ISC"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/users": {
+			"get": {
+				"operationId": "GetUsers",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"items": {
+												"$ref": "#/components/schemas/IUser"
+											},
+											"type": "array"
+										},
+										{}
+									]
+								}
+							}
+						},
+						"description": "Ok"
+					},
+					"400": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Bad Request"
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/users/{id}": {
+			"get": {
+				"operationId": "GetUser",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"$ref": "#/components/schemas/IUser"
+										},
+										{
+											"$ref": "#/components/schemas/ICustomResponse"
+										}
+									]
+								}
+							}
+						},
+						"description": "Ok"
+					},
+					"400": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Bad Request"
+					},
+					"404": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Not Found"
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{},
+										{
+											"$ref": "#/components/schemas/ICustomResponse"
+										}
+									]
+								}
+							}
+						},
+						"description": "Login Successfull"
+					},
+					"400": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Bad Request"
+					},
+					"401": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Unauthorized: check your credentials"
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ICredentials"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/signup": {
+			"post": {
+				"operationId": "SignupUser",
+				"responses": {
+					"201": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{},
+										{
+											"$ref": "#/components/schemas/ICustomResponse"
+										}
+									]
+								}
+							}
+						},
+						"description": "User Successfully created"
+					},
+					"400": {
+						"content": {
+							"application/json": {}
+						},
+						"description": "Bad Request"
+					}
+				},
+				"tags": [
+					"Auth"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUser"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "https://localhost:8080/"
+		}
+	]
+}
